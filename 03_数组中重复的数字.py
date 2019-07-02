@@ -52,7 +52,7 @@ class Solution(object):
         return -1
 
 
-    # 二分迭代法
+    # 二分迭代
     def find_repeat_02_iter(self, arr):
         """不修改数组找出数组中任意一个重复数字
         背景：在一个长度为n+1的数组里的所有数字都在1～n范围内，故必存在重复数字。
