@@ -29,61 +29,91 @@ def swap_arr(arr, i, j):
     arr[i], arr[j] = arr[j], arr[i]
 
 
-def find_repeat_01(arr):
-    """找出数组中任意一个重复数字
-    背景：在一个长度为n的数组里的所有数字都在0～n-1范围内。数组中某些数字重复，但不知道重复数字和次数。
-    要求：请找出数组中任意一个重复数字。
-    输入：[2, 3, 1, 0, 2, 5, 3]
-    输出：2 或 3
-    """
-    if len(arr) in (0, 1):
+class Solution(object):
+    def __init__(self):
+        pass
+
+    def find_repeat_01(self, arr):
+        """找出数组中任意一个重复数字
+        背景：在一个长度为n的数组里的所有数字都在0～n-1范围内。数组中某些数字重复，但不知道重复数字和次数。
+        要求：请找出数组中任意一个重复数字。
+        输入：[2, 3, 1, 0, 2, 5, 3]
+        输出：2 或 3
+        """
+        if len(arr) in (0, 1):
+            return -1
+
+        for i in range(len(arr)):
+            if i != arr[i]:
+                if arr[i] == arr[arr[i]]:
+                    return arr[i]
+                swap_arr(arr, i, arr[i])
+
         return -1
 
-    for i in range(len(arr)):
-        if i != arr[i]:
-            if arr[i] == arr[arr[i]]:
-                return arr[i]
-            swap_arr(arr, i, arr[i])
 
-    return -1
+    # 二分迭代法
+    def find_repeat_02_iter(self, arr):
+        """不修改数组找出数组中任意一个重复数字
+        背景：在一个长度为n+1的数组里的所有数字都在1～n范围内，故必存在重复数字。
+        要求：不修改数组，找出重复数字
+        输入：[2, 3, 5, 4, 3, 2, 6, 7]
+        输出：2 或 3
 
+        迭代法
+        """
+        if len(arr) in (0, 1):
+            return -1
 
-# 二分迭代法，也可用递归会更简洁
-def find_repeat_02(arr):
-    """不修改数组找出数组中任意一个重复数字
-    背景：在一个长度为n+1的数组里的所有数字都在1～n范围内，故必存在重复数字。
-    要求：不修改数组，找出重复数字
-    输入：[2, 3, 5, 4, 3, 2, 6, 7]
-    输出：2 或 3
-    """
-    if len(arr) in (0, 1):
-        return -1
+        st, ed = 1, len(arr) - 1
+        while ed - st > 0:
+            mid = (st + ed) // 2
+            # 计算搜索区域内元素个数
+            cnt_small = 0
+            for num in arr:
+                if st <= num <= mid:
+                    cnt_small = cnt_small + 1
+            # 更新搜索范围
+            if cnt_small > mid - st + 1:
+                ed = mid
+            else:
+                st = mid + 1
 
-    n = len(arr) - 1
-    range_min = 1
-    range_max = n
-    while range_max - range_min > 0:
+        return st
 
-        # 获取区间中值
-        mid = (range_min + range_max) // 2
+    # 二分递归
+    def find_repeat_02_recurse(self, arr):
+        """不修改数组找出数组中任意一个重复数字
+        背景：在一个长度为n+1的数组里的所有数字都在1～n范围内，故必存在重复数字。
+        要求：不修改数组，找出重复数字
+        输入：[2, 3, 5, 4, 3, 2, 6, 7]
+        输出：2 或 3
 
-        # 统计小值区间内元素个数
-        cnt_former = 0
+        递归法
+        """
+        if len(arr) in (0, 1):
+            return -1
+
+        st, ed = 1, len(arr) - 1
+        return self._recurse(arr, st, ed)
+
+    def _recurse(self, arr, st, ed):
+        """递归调用，获取重复数字范围
+        Args:
+            arr: 被搜索的数组
+            range_st: 搜索范围起点
+            range_ed: 搜索范围终点
+        """
+        # 递归出口
+        if ed == st:
+            return st
+        # 计算搜索区域内元素个数
+        mid = (st + ed) // 2
+        cnt_small = 0
         for num in arr:
-            if num >= range_min and num <= mid:
-                cnt_former += 1
-
-        # 若区间范围为1，则直接返回多的元素值
-        if range_max - range_min == 1:
-            return range_min if cnt_former > mid - range_min + 1 else range_max
-
-        # 更新区间
-        if cnt_former > mid - range_min + 1:
-            range_max = mid
-        else:
-            range_min = mid
-
-    return range_min
+            if st <= num <= mid:
+                cnt_small = cnt_small + 1
+        return self._recurse(arr, st, mid) if cnt_small > mid - st + 1 else self._recurse(arr, mid + 1, ed)
 
 
 # 测试
@@ -91,18 +121,20 @@ if __name__ == '__main__':
     from numpy import random
     random.seed(0)
 
+    s = Solution()
     # a. 测试重复数组
     print('a. 重复数组')
     for _ in range(5):
         nums = random.choice(range(10), 10, replace=True)
-        print(nums, find_repeat_01(nums))
+        print(nums, s.find_repeat_01(nums))
     # a. 测试无重复数组
     print('a. 无重复数组')
     for _ in range(5):
         nums = random.choice(range(10), 10, replace=False)
-        print(nums, find_repeat_01(nums))
+        print(nums, s.find_repeat_01(nums))
     # b. 测试重复数组
     print('b. 重复数组')
     for _ in range(5):
         nums = random.choice(range(1, 10), 10, replace=True)
-        print(nums, find_repeat_02(nums))
+        print(nums, s.find_repeat_02_iter(nums))
+        print(nums, s.find_repeat_02_recurse(nums))
