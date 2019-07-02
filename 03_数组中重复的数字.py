@@ -35,13 +35,6 @@ def find_repeat_01(arr):
     要求：请找出数组中任意一个重复数字。
     输入：[2, 3, 1, 0, 2, 5, 3]
     输出：2 或 3
-
-    Args:
-        arr: 输入数组
-
-    Returns:
-        若找出的重复数字，返回该数字
-        若未找到，返回-1
     """
     if len(arr) in (0, 1):
         return -1
@@ -55,18 +48,13 @@ def find_repeat_01(arr):
     return -1
 
 
+# 二分迭代法，也可用递归会更简洁
 def find_repeat_02(arr):
     """不修改数组找出数组中任意一个重复数字
     背景：在一个长度为n+1的数组里的所有数字都在1～n范围内，故必存在重复数字。
     要求：不修改数组，找出重复数字
     输入：[2, 3, 5, 4, 3, 2, 6, 7]
     输出：2 或 3
-
-    Args:
-        arr: 输入数组
-
-    Returns:
-        重复数字
     """
     if len(arr) in (0, 1):
         return -1
@@ -75,15 +63,21 @@ def find_repeat_02(arr):
     range_min = 1
     range_max = n
     while range_max - range_min > 0:
+
+        # 获取区间中值
         mid = (range_min + range_max) // 2
+
+        # 统计小值区间内元素个数
         cnt_former = 0
         for num in arr:
             if num >= range_min and num <= mid:
                 cnt_former += 1
 
+        # 若区间范围为1，则直接返回多的元素值
         if range_max - range_min == 1:
             return range_min if cnt_former > mid - range_min + 1 else range_max
 
+        # 更新区间
         if cnt_former > mid - range_min + 1:
             range_max = mid
         else:
@@ -92,30 +86,23 @@ def find_repeat_02(arr):
     return range_min
 
 
+# 测试
 if __name__ == '__main__':
-
     from numpy import random
-
-
-    # a.
-    # 测试重复数组
-    print('a. 重复数组')
     random.seed(0)
+
+    # a. 测试重复数组
+    print('a. 重复数组')
     for _ in range(5):
         nums = random.choice(range(10), 10, replace=True)
         print(nums, find_repeat_01(nums))
-    # 测试无重复数组
+    # a. 测试无重复数组
     print('a. 无重复数组')
-    random.seed(0)
     for _ in range(5):
         nums = random.choice(range(10), 10, replace=False)
         print(nums, find_repeat_01(nums))
-
-
-    # b.
-    # 测试重复数组
+    # b. 测试重复数组
     print('b. 重复数组')
-    random.seed(0)
     for _ in range(5):
         nums = random.choice(range(1, 10), 10, replace=True)
         print(nums, find_repeat_02(nums))
