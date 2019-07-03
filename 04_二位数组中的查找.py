@@ -15,13 +15,11 @@ Project JianzhiOffer-Python -- 面试题04: 二位数组中的查找
                [ 6,  8, 11, 15]]
 输出：True
 
-
 Usage: 
 Authors: Zhou Jialiang
 Email: zjl_sempre@163.com
 Date: 2019-07-02 
 """
-
 class Solution(object):
     def __init__(self):
         pass
