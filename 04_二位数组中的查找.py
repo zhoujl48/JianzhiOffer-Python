@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 #
-# Copyright (c) 2019 ***.com, Inc. All Rights Reserved
-# The Common Tools Project
+# Copyright (c) 2019 github.com/zhoujl48, Inc. All Rights Reserved
+#
 """
 Project JianzhiOffer-Python -- 面试题04: 二位数组中的查找
 
@@ -18,7 +18,7 @@ Project JianzhiOffer-Python -- 面试题04: 二位数组中的查找
 Usage: 
 Authors: Zhou Jialiang
 Email: zjl_sempre@163.com
-Date: 2019-07-02 
+Date: 2019-07-03
 """
 class Solution(object):
     def __init__(self):

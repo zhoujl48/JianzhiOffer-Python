@@ -1,8 +1,8 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 #
-# Copyright (c) 2019 ***.com, Inc. All Rights Reserved
-# The Common Tools Project
+# Copyright (c) 2019 github.com/zhoujl48, Inc. All Rights Reserved
+#
 """
 Project JianzhiOffer-Python -- 面试题03: 数组中重复的数字
 
@@ -51,15 +51,22 @@ class Solution(object):
 
         return -1
 
+    def _count_in_range(self, arr, st, mid):
+        """计算搜索区域内元素个数
+        """
+        cnt_small = 0
+        for num in arr:
+            if st <= num <= mid:
+                cnt_small = cnt_small + 1
+        return cnt_small
+
     # 二分迭代
     def find_repeat_02_iter(self, arr):
-        """不修改数组找出数组中任意一个重复数字
+        """不修改数组找出数组中任意一个重复数字(迭代法)
         背景：在一个长度为n+1的数组里的所有数字都在1～n范围内，故必存在重复数字。
         要求：不修改数组，找出重复数字
         输入：[2, 3, 5, 4, 3, 2, 6, 7]
         输出：2 或 3
-
-        迭代法
         """
         if len(arr) in (0, 1):
             return -1
@@ -68,10 +75,7 @@ class Solution(object):
         while ed - st > 0:
             mid = (st + ed) // 2
             # 计算搜索区域内元素个数
-            cnt_small = 0
-            for num in arr:
-                if st <= num <= mid:
-                    cnt_small = cnt_small + 1
+            cnt_small = self._count_in_range(arr, st, mid)
             # 更新搜索范围
             if cnt_small > mid - st + 1:
                 ed = mid
@@ -82,13 +86,11 @@ class Solution(object):
 
     # 二分递归
     def find_repeat_02_recurse(self, arr):
-        """不修改数组找出数组中任意一个重复数字
+        """不修改数组找出数组中任意一个重复数字(递归法)
         背景：在一个长度为n+1的数组里的所有数字都在1～n范围内，故必存在重复数字。
         要求：不修改数组，找出重复数字
         输入：[2, 3, 5, 4, 3, 2, 6, 7]
         输出：2 或 3
-
-        递归法
         """
         if len(arr) in (0, 1):
             return -1
@@ -100,18 +102,15 @@ class Solution(object):
         """递归调用，获取重复数字范围
         Args:
             arr: 被搜索的数组
-            range_st: 搜索范围起点
-            range_ed: 搜索范围终点
+            st: 搜索范围起点
+            ed: 搜索范围终点
         """
         # 递归出口
         if ed == st:
             return st
         # 计算搜索区域内元素个数
         mid = (st + ed) // 2
-        cnt_small = 0
-        for num in arr:
-            if st <= num <= mid:
-                cnt_small = cnt_small + 1
+        cnt_small = self._count_in_range(arr, st, mid)
         return self._recurse(arr, st, mid) if cnt_small > mid - st + 1 else self._recurse(arr, mid + 1, ed)
 
 
