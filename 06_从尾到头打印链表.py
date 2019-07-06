@@ -22,6 +22,30 @@ class LinkNode(object):
         self.next = None
 
 
+def gen_linked_list(arr):
+    """初始化链表
+    """
+    if not arr:
+        return None
+    head = LinkNode(arr[0])
+    if len(arr) > 1:
+        cur = head
+        for val in arr[1:]:
+            cur.next = LinkNode(val)
+            cur = cur.next
+    return head
+
+
+def print_linked_list(head):
+    """打印链表
+    """
+    cur = head
+    while cur:
+        print(cur.val, end=' ')
+        cur = cur.next
+    print()
+
+
 class Solution(object):
     def __init__(self):
         pass
@@ -37,7 +61,8 @@ class Solution(object):
             stack.append(cur.val)
             cur = cur.next
         while stack:
-            print(stack.pop(), end='')
+            print(stack.pop(), end=' ')
+        print()
 
     def reverse_recurse(self, head):
         """反向打印链表(递归)
@@ -46,37 +71,27 @@ class Solution(object):
             return
         cur = head
         self._recurse(cur)
+        print()
 
     def _recurse(self, cur):
         if not cur:
             return
         self._recurse(cur.next)
-        print(cur.val, end='')
+        print(cur.val, end=' ')
 
 
 # 测试
 if __name__ == '__main__':
 
-    # 初始化链表: [0, 1, 2, 3, 4]
-    head = LinkNode(0)
-    head.next = LinkNode(1)
-    cur = head.next
-    for val in range(2, 5):
-        cur.next = LinkNode(val)
-        cur = cur.next
-
-    # 正向打印链表
-    print('正向打印:\t', end='')
-    cur = head
-    while cur:
-        print(cur.val, end='')
-        cur = cur.next
+    # 初始化链表并打印
+    head = gen_linked_list([0, 1, 2, 3, 4])
+    print('正向打印:\t', end=' ')
+    print_linked_list(head)
 
     # 反向打印链表
     s = Solution()
-    print('\n反向打印(栈):\t', end='')
+    print('反向打印(栈):\t', end=' ')
     s.reverse_stack(head)
-    print('\n反向打印(递归):\t', end='')
+    print('反向打印(递归):\t', end=' ')
     s.reverse_recurse(head)
-    print('\n', end='')
 
