@@ -89,7 +89,7 @@ class Solution(object):
         return is_balance
 
     def print_layer_with_newline(self, root):
-        """层序打印(用于测试是否实现镜像功能)
+        """层序打印(用于方便测试二叉树输出)
         """
         if not root:
             return
